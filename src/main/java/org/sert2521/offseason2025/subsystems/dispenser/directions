@@ -1,0 +1,8 @@
+IO directions:
+    1 NEO/Spark
+    1 Beambreak
+
+Command/Logic directions:
+When beambreak starts being blocked intake at a moderate high speed until it stops being blocked
+Then reverse at slow speed until it is blocked again
+Finally intake at slow speed until it stops being blocked
