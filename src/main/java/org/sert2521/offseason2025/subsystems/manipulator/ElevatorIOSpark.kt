@@ -1,0 +1,98 @@
+package org.sert2521.offseason2025.subsystems.manipulator
+
+import com.revrobotics.spark.ClosedLoopSlot
+import com.revrobotics.spark.SparkBase
+import com.revrobotics.spark.SparkLowLevel
+import com.revrobotics.spark.SparkMax
+import com.revrobotics.spark.config.SparkBaseConfig
+import com.revrobotics.spark.config.SparkMaxConfig
+import org.sert2521.offseason2025.ElectronicIDs.ELEVATOR_LEFT_ID
+import org.sert2521.offseason2025.ElectronicIDs.ELEVATOR_RIGHT_ID
+import org.sert2521.offseason2025.ManipulatorConstants.ELEVATOR_MOTOR_ENCODER_MULTIPLIER
+import org.sert2521.offseason2025.ManipulatorConstants.ELEVATOR_D
+import org.sert2521.offseason2025.ManipulatorConstants.ELEVATOR_G
+import org.sert2521.offseason2025.ManipulatorConstants.ELEVATOR_P
+import org.sert2521.offseason2025.ManipulatorConstants.ELEVATOR_V
+
+class ElevatorIOSpark : ElevatorIO {
+    private val leftMotor = SparkMax(ELEVATOR_LEFT_ID, SparkLowLevel.MotorType.kBrushless)
+    private val rightMotor = SparkMax(ELEVATOR_RIGHT_ID, SparkLowLevel.MotorType.kBrushless)
+
+    init {
+        // Put the spark config into the init, so that java can garbage collect it
+        // It's a small optimization because now it doesn't have to store the value the whole code
+        val leftConfig = SparkMaxConfig()
+        val rightConfig = SparkMaxConfig()
+
+        leftConfig
+            .inverted(false)
+            .smartCurrentLimit(40)
+            .idleMode(SparkBaseConfig.IdleMode.kBrake)
+            .encoder // Position and velocity are in m and m/s respectively
+            .positionConversionFactor(ELEVATOR_MOTOR_ENCODER_MULTIPLIER)
+            .velocityConversionFactor(ELEVATOR_MOTOR_ENCODER_MULTIPLIER / 60)
+
+        leftConfig.closedLoop
+            .pidf( // F stands for Feedforward, works like a V gain. The F isn't useful for our purposes
+                ELEVATOR_P, 0.0,
+                ELEVATOR_D, 0.0
+            )
+
+        rightConfig
+            .smartCurrentLimit(40)
+            .idleMode(SparkBaseConfig.IdleMode.kBrake)
+            .inverted(true)
+            .encoder
+            .positionConversionFactor(ELEVATOR_MOTOR_ENCODER_MULTIPLIER)
+            .velocityConversionFactor(ELEVATOR_MOTOR_ENCODER_MULTIPLIER / 60)
+
+        rightConfig.closedLoop
+            .pidf(
+                ELEVATOR_P, 0.0,
+                ELEVATOR_D, 0.0
+            )
+
+        leftMotor.configure(
+            leftConfig,
+            SparkBase.ResetMode.kResetSafeParameters,
+            SparkBase.PersistMode.kPersistParameters
+        )
+        rightMotor.configure(
+            rightConfig,
+            SparkBase.ResetMode.kResetSafeParameters,
+            SparkBase.PersistMode.kPersistParameters
+        )
+    }
+
+    override fun updateInputs(inputs: ElevatorIO.ElevatorIOInputs) {
+        inputs.currentAmps = (leftMotor.outputCurrent + rightMotor.outputCurrent) / 2
+        inputs.appliedVolts =
+            (leftMotor.busVoltage * leftMotor.appliedOutput + rightMotor.busVoltage * rightMotor.appliedOutput) / 2
+        inputs.velocityMetersPerSec = (leftMotor.encoder.velocity + rightMotor.encoder.velocity) / 2
+        inputs.positionMeters = (leftMotor.encoder.position + rightMotor.encoder.position) / 2
+    }
+
+    override fun setVoltage(voltage: Double) {
+        leftMotor.setVoltage(voltage)
+        rightMotor.setVoltage(voltage)
+    }
+
+    override fun setReference(setpointPosition: Double, setpointVelocity: Double) {
+        // Feedforward function
+        // Didn't feel like we needed the entire ElevatorFeedforward() class
+        val arbFF = setpointVelocity * ELEVATOR_V + ELEVATOR_G
+
+        leftMotor.closedLoopController.setReference( // closedLoopController is PID calculated on the sparks
+            setpointPosition, // The setpoint it's trying to reach
+            SparkBase.ControlType.kPosition, // Dimension of setpoint, e.g. position, velocity, voltage, current, etc.
+            ClosedLoopSlot.kSlot0, // Slot of PID, default is zero.
+            arbFF // Added voltage fed into the spark on top of PID, works like a feedforward result
+        )
+        rightMotor.closedLoopController.setReference(
+            setpointPosition,
+            SparkBase.ControlType.kPosition,
+            ClosedLoopSlot.kSlot0,
+            arbFF
+        )
+    }
+}
