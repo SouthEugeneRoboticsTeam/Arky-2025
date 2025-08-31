@@ -8,11 +8,11 @@ import com.revrobotics.spark.config.SparkBaseConfig
 import com.revrobotics.spark.config.SparkMaxConfig
 import org.sert2521.offseason2025.ElectronicIDs.ELEVATOR_LEFT_ID
 import org.sert2521.offseason2025.ElectronicIDs.ELEVATOR_RIGHT_ID
-import org.sert2521.offseason2025.ManipulatorConstants.ELEVATOR_MOTOR_ENCODER_MULTIPLIER
-import org.sert2521.offseason2025.ManipulatorConstants.ELEVATOR_D
-import org.sert2521.offseason2025.ManipulatorConstants.ELEVATOR_G
-import org.sert2521.offseason2025.ManipulatorConstants.ELEVATOR_P
-import org.sert2521.offseason2025.ManipulatorConstants.ELEVATOR_V
+import org.sert2521.offseason2025.ElevatorConstants.ELEVATOR_MOTOR_ENCODER_MULTIPLIER
+import org.sert2521.offseason2025.ElevatorConstants.ELEVATOR_D
+import org.sert2521.offseason2025.ElevatorConstants.ELEVATOR_G
+import org.sert2521.offseason2025.ElevatorConstants.ELEVATOR_P
+import org.sert2521.offseason2025.ElevatorConstants.ELEVATOR_V
 
 class ElevatorIOSpark : ElevatorIO {
     private val leftMotor = SparkMax(ELEVATOR_LEFT_ID, SparkLowLevel.MotorType.kBrushless)
