@@ -1,4 +1,4 @@
-package org.sert2521.offseason2025.subsystems.manipulator
+package org.sert2521.offseason2025.subsystems.wrist
 
 import com.revrobotics.spark.ClosedLoopSlot
 import com.revrobotics.spark.SparkBase
@@ -46,8 +46,8 @@ class WristIOSpark:WristIO {
         inputs.appliedVolts = motor.appliedOutput * motor.busVoltage
         inputs.currentAmps = motor.outputCurrent
 
-        inputs.positionRadians = motor.absoluteEncoder.position
-        inputs.velocityRadiansPerSecond = motor.absoluteEncoder.velocity
+        inputs.positionRotations = motor.absoluteEncoder.position
+        inputs.velocityRotationsPerSecond = motor.absoluteEncoder.velocity
     }
 
     override fun setVoltage(volts: Double) {

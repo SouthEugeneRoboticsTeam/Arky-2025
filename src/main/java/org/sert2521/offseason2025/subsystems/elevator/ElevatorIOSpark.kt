@@ -1,4 +1,4 @@
-package org.sert2521.offseason2025.subsystems.manipulator
+package org.sert2521.offseason2025.subsystems.elevator
 
 import com.revrobotics.spark.ClosedLoopSlot
 import com.revrobotics.spark.SparkBase
