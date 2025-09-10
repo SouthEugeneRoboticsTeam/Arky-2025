@@ -5,7 +5,6 @@ import edu.wpi.first.hal.FRCNetComm.tResourceType
 import edu.wpi.first.hal.HAL
 import edu.wpi.first.wpilibj.RobotBase
 import edu.wpi.first.wpilibj.Threads
-import edu.wpi.first.wpilibj.TimedRobot
 import edu.wpi.first.wpilibj.util.WPILibVersion
 import edu.wpi.first.wpilibj2.command.Command
 import edu.wpi.first.wpilibj2.command.CommandScheduler
@@ -15,6 +14,7 @@ import org.littletonrobotics.junction.Logger
 import org.littletonrobotics.junction.networktables.NT4Publisher
 import org.littletonrobotics.junction.wpilog.WPILOGReader
 import org.littletonrobotics.junction.wpilog.WPILOGWriter
+import org.sert2521.offseason2025.MetaConstants.currentRealityMode
 import org.sert2521.offseason2025.subsystems.drivetrain.Drivetrain
 
 /**
@@ -29,17 +29,8 @@ import org.sert2521.offseason2025.subsystems.drivetrain.Drivetrain
  */
 object Robot : LoggedRobot()
 {
-    enum class RealityMode{
-        REAL,
-        SIM,
-        REPLAY
-    }
 
-    val currentRealityMode = if (RobotBase.isReal()){
-        RealityMode.REAL
-    } else {
-        RealityMode.SIM
-    }
+
 
     private var autonomousCommand: Command? = null
 
@@ -54,17 +45,17 @@ object Robot : LoggedRobot()
         // button bindings, and put our autonomous chooser on the dashboard.
 
         when (currentRealityMode) {
-            RealityMode.REAL -> {
+            MetaConstants.RealityMode.REAL -> {
                 // Running on a real robot, log to a USB stick ("/U/logs")
                 Logger.addDataReceiver(WPILOGWriter())
                 Logger.addDataReceiver(NT4Publisher())
             }
 
-            RealityMode.SIM ->
+            MetaConstants.RealityMode.SIM ->
                 // Running a physics simulator, log to NT
                 Logger.addDataReceiver(NT4Publisher())
 
-            RealityMode.REPLAY -> {
+            MetaConstants.RealityMode.REPLAY -> {
                 // Replaying a log, set up replay source
                 setUseTiming(false) // Run as fast as possible
                 val logPath = LogFileUtil.findReplayLog()

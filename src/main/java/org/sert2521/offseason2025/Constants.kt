@@ -2,6 +2,7 @@ package org.sert2521.offseason2025
 
 import edu.wpi.first.math.trajectory.TrapezoidProfile
 import edu.wpi.first.units.Units.Pounds
+import edu.wpi.first.wpilibj.RobotBase
 import kotlin.math.PI
 
 object DispenserConstants{
@@ -52,4 +53,18 @@ object ElectronicIDs {
     const val ELEVATOR_RIGHT_ID = 14
 
     const val WRIST_ID = 0
+}
+
+object MetaConstants{
+    enum class RealityMode{
+        REAL,
+        SIM,
+        REPLAY
+    }
+
+    val currentRealityMode = if (RobotBase.isReal()){
+        MetaConstants.RealityMode.REAL
+    } else {
+        MetaConstants.RealityMode.SIM
+    }
 }

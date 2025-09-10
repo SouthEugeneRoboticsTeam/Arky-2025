@@ -1,4 +1,4 @@
-package org.sert2521.offseason2025.utils
+package org.sert2521.offseason2025.commands.manipulator
 
 import edu.wpi.first.wpilibj2.command.Command
 import edu.wpi.first.wpilibj2.command.Commands

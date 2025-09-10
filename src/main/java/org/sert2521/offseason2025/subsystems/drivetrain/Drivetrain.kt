@@ -23,8 +23,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine
 import org.ironmaple.simulation.SimulatedArena
 import org.ironmaple.simulation.drivesims.SwerveDriveSimulation
-import org.littletonrobotics.junction.AutoLogOutput
 import org.littletonrobotics.junction.Logger
+import org.sert2521.offseason2025.MetaConstants
 import org.sert2521.offseason2025.Robot
 import org.sert2521.offseason2025.VisionTargetPositions
 import org.sert2521.offseason2025.commands.drivetrain.JoystickDrive
@@ -38,7 +38,7 @@ object Drivetrain : SubsystemBase() {
     val odometryLock: ReentrantLock = ReentrantLock()
 
     val swerveDriveSimulation = //Doesn't create it in REAL or REPLAY to save objects
-        if (Robot.currentRealityMode == Robot.RealityMode.SIM) {
+        if (MetaConstants.currentRealityMode == MetaConstants.RealityMode.SIM) {
             SwerveDriveSimulation(
                 SwerveConstants.mapleSimConfig,
                 Pose2d(3.0, 3.0, Rotation2d())
@@ -48,29 +48,29 @@ object Drivetrain : SubsystemBase() {
         }
 
     private val gyroInputs = LoggedGyroIOInputs()
-    private val gyroIO = when (Robot.currentRealityMode) {
-        Robot.RealityMode.REAL -> GyroIONavX()
-        Robot.RealityMode.SIM -> GyroIOSim(swerveDriveSimulation!!.gyroSimulation)
-        Robot.RealityMode.REPLAY -> object : GyroIO {}
+    private val gyroIO = when (MetaConstants.currentRealityMode) {
+        MetaConstants.RealityMode.REAL -> GyroIONavX()
+        MetaConstants.RealityMode.SIM -> GyroIOSim(swerveDriveSimulation!!.gyroSimulation)
+        MetaConstants.RealityMode.REPLAY -> object : GyroIO {}
     }
 
     private val visionInputsLeft = LoggedVisionIOInputs()
     private val visionInputsRight = LoggedVisionIOInputs()
 
-    private val visionIOLeft = when (Robot.currentRealityMode) {
-        Robot.RealityMode.REAL -> VisionIOLimelight("limelight-left")
+    private val visionIOLeft = when (MetaConstants.currentRealityMode) {
+        MetaConstants.RealityMode.REAL -> VisionIOLimelight("limelight-left")
         else -> object : VisionIO {}
     }
-    private val visionIORight = when (Robot.currentRealityMode) {
-        Robot.RealityMode.REAL -> VisionIOLimelight("limelight-right")
+    private val visionIORight = when (MetaConstants.currentRealityMode) {
+        MetaConstants.RealityMode.REAL -> VisionIOLimelight("limelight-right")
         else -> object : VisionIO {}
     }
 
     private val modules =
-        when (Robot.currentRealityMode) {
-            Robot.RealityMode.REAL -> Array(4) { Module(ModuleIOSpark(it), it) }
-            Robot.RealityMode.SIM -> Array(4) { Module(ModuleIOSim(swerveDriveSimulation!!.modules[it]), it) }
-            Robot.RealityMode.REPLAY -> Array(4) { Module(object : ModuleIO {}, it) }
+        when (MetaConstants.currentRealityMode) {
+            MetaConstants.RealityMode.REAL -> Array(4) { Module(ModuleIOSpark(it), it) }
+            MetaConstants.RealityMode.SIM -> Array(4) { Module(ModuleIOSim(swerveDriveSimulation!!.modules[it]), it) }
+            MetaConstants.RealityMode.REPLAY -> Array(4) { Module(object : ModuleIO {}, it) }
         }
 
 
@@ -119,7 +119,7 @@ object Drivetrain : SubsystemBase() {
 
         //I'm putting the auto builder somewhere else because this is ridiculous
 
-        if (Robot.currentRealityMode == Robot.RealityMode.SIM) {
+        if (MetaConstants.currentRealityMode == MetaConstants.RealityMode.SIM) {
             SimulatedArena.getInstance().addDriveTrainSimulation(swerveDriveSimulation)
         }
     }
@@ -177,7 +177,7 @@ object Drivetrain : SubsystemBase() {
         Logger.processInputs("Drive/Limelight Left", visionInputsLeft)
         Logger.processInputs("Drive/Limelight Right", visionInputsRight)
 
-        gyroDisconnectedAlert.set(!gyroInputs.connected && Robot.currentRealityMode != Robot.RealityMode.SIM)
+        gyroDisconnectedAlert.set(!gyroInputs.connected && MetaConstants.currentRealityMode != MetaConstants.RealityMode.SIM)
 
         if (!visionInputsLeft.rejectEstimation) {
             if (visionInputsLeft.megatagTwo) {
@@ -223,7 +223,7 @@ object Drivetrain : SubsystemBase() {
         Logger.recordOutput("Odometry/Robot Pose", getPose())
         Logger.recordOutput("Odometry/Robot Rotations", getPose().rotation.rotations)
 
-        if (Robot.currentRealityMode == Robot.RealityMode.SIM) {
+        if (MetaConstants.currentRealityMode == MetaConstants.RealityMode.SIM) {
             Logger.recordOutput("FieldSimulation/RobotPosition", swerveDriveSimulation!!.simulatedDriveTrainPose)
         }
     }
@@ -344,7 +344,7 @@ object Drivetrain : SubsystemBase() {
     }
 
     fun getPose(): Pose2d {
-        return if (Robot.currentRealityMode == Robot.RealityMode.SIM){
+        return if (MetaConstants.currentRealityMode == MetaConstants.RealityMode.SIM){
             swerveDriveSimulation!!.simulatedDriveTrainPose
         } else {
             poseEstimator.estimatedPosition

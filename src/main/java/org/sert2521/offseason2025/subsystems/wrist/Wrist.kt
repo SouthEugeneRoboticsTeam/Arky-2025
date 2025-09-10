@@ -5,11 +5,15 @@ import edu.wpi.first.wpilibj2.command.Command
 import edu.wpi.first.wpilibj2.command.Commands
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import org.littletonrobotics.junction.Logger
-import org.sert2521.offseason2025.subsystems.elevator.LoggedWristIOInputs
+import org.sert2521.offseason2025.ManipulatorTargets
 
 object Wrist : SubsystemBase() {
     private val io = WristIOSpark()
     private val ioInputs = LoggedWristIOInputs()
+
+    init{
+        defaultCommand = setWristCommand(ManipulatorTargets.stow.wristGoalRotations)
+    }
 
     override fun periodic() {
         io.updateInputs(ioInputs)

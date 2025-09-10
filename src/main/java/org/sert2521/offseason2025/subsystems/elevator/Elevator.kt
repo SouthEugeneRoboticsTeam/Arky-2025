@@ -2,33 +2,23 @@ package org.sert2521.offseason2025.subsystems.elevator
 
 import edu.wpi.first.math.MathUtil
 import edu.wpi.first.math.trajectory.TrapezoidProfile
-import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d
-import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
-import edu.wpi.first.wpilibj.util.Color8Bit
 import edu.wpi.first.wpilibj2.command.Command
 import edu.wpi.first.wpilibj2.command.Commands
 import edu.wpi.first.wpilibj2.command.SubsystemBase
 import org.littletonrobotics.junction.Logger
 import org.sert2521.offseason2025.ElevatorConstants.ELEVATOR_PROFILE
-import org.sert2521.offseason2025.Robot
-import org.sert2521.reefscape2025.MetaConstants
-import org.sert2521.reefscape2025.SetpointConstants
-import org.sert2521.reefscape2025.TuningConstants.ELEVATOR_PROFILE
-import org.sert2521.reefscape2025.subsystems.dispenser.Dispenser
-import kotlin.math.E
+import org.sert2521.offseason2025.ManipulatorTargets
+import org.sert2521.offseason2025.MetaConstants
 
 object Elevator : SubsystemBase() {
-    private val io = when (Robot.currentRealityMode) {
-        Robot.RealityMode.REAL -> ElevatorIOSpark()
-        Robot.RealityMode.SIM -> ElevatorIOSim()
-        Robot.RealityMode.REPLAY -> object : ElevatorIO {}
+    private val io = when (MetaConstants.currentRealityMode) {
+        MetaConstants.RealityMode.REAL -> ElevatorIOSpark()
+        else -> object : ElevatorIO {}
     }
 
-    private val telemetry = when(Robot.currentRealityMode) {
-        Robot.RealityMode.REAL -> ElevatorTelemetry(mechanism2dEnabled = false, mechanism3dEnabled = false)
-        Robot.RealityMode.SIM -> ElevatorTelemetry(mechanism2dEnabled = true, mechanism3dEnabled = true)
-        Robot.RealityMode.REPLAY -> ElevatorTelemetry(mechanism2dEnabled = true, mechanism3dEnabled = true)
+    private val telemetry = when(MetaConstants.currentRealityMode) {
+        MetaConstants.RealityMode.REAL -> ElevatorTelemetry(mechanism2dEnabled = false, mechanism3dEnabled = false)
+        else -> ElevatorTelemetry(mechanism2dEnabled = true, mechanism3dEnabled = true)
     }
 
     private val ioInputs = LoggedElevatorIOInputs()
@@ -88,7 +78,7 @@ object Elevator : SubsystemBase() {
     }
 
     fun setElevatorSafeCommand(goalMeters: Double): Command {
-        return Commands.waitUntil { !Dispenser.getBlocked() }
+        return Commands.waitUntil { /*!Dispenser.getBlocked()*/false }
             .andThen(setElevatorCommand(goalMeters))
     }
 
@@ -96,7 +86,7 @@ object Elevator : SubsystemBase() {
         // If it's at stow, then set the voltage to 0
         // Otherwise just run the profile without a new goal until another goal is set
         return run {
-            if (goal.position == SetpointConstants.ELEVATOR_STOW) {
+            if (goal.position == ManipulatorTargets.stow.elevatorGoalMeters) {
                 io.setVoltage(0.0)
             } else {
                 io.setReference(currentState.position, currentState.velocity)
