@@ -1,0 +1,35 @@
+package org.sert2521.offseason2025.subsystems.ramp
+
+import edu.wpi.first.wpilibj2.command.Command
+import edu.wpi.first.wpilibj2.command.SubsystemBase
+import org.sert2521.offseason2025.RampConstants.INTAKE_SPEED
+
+object Ramp: SubsystemBase() {
+    private val io = RampIOSpark()
+    private val ioInputs = LoggedRampIOInputs()
+
+    init {
+        defaultCommand = idleCommand()
+    }
+
+
+    // TODO: Change
+    fun idleCommand(): Command {
+        return run {
+            io.setSpeed(0.0)
+        }
+    }
+
+    fun intakeCommand(): Command {
+        return run {
+            io.setSpeed(INTAKE_SPEED)
+        }
+    }
+
+    // TODO: Change
+    fun recenterCommand(): Command {
+        return run {
+            io.setSpeed(0.0)
+        }
+    }
+}

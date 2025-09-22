@@ -36,7 +36,8 @@ object WristConstants{
 }
 
 object RampConstants{
-
+    const val INTAKE_SPEED = 0.0
+    const val RECENTER_SPEED = 0.0
 }
 
 object PhysicalConstants{
@@ -46,13 +47,6 @@ object PhysicalConstants{
 object ControllerConstants {
     const val POWER_DEADBAND = 0.2
     const val ROTATION_DEADBAND = 0.2
-}
-
-object ElectronicIDs {
-    const val ELEVATOR_LEFT_ID = 13
-    const val ELEVATOR_RIGHT_ID = 14
-
-    const val WRIST_ID = 0
 }
 
 object MetaConstants{
@@ -67,4 +61,15 @@ object MetaConstants{
     } else {
         MetaConstants.RealityMode.SIM
     }
+}
+
+object ElectronicIDs {
+    const val ELEVATOR_LEFT_ID = 13
+    const val ELEVATOR_RIGHT_ID = 14
+
+    const val WRIST_ID = 0
+
+    const val RAMP_ID = 0
+
+    const val DISPENSER_ID = 0
 }
