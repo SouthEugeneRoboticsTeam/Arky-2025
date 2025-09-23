@@ -9,22 +9,16 @@ import org.littletonrobotics.junction.Logger
 import org.sert2521.offseason2025.ElevatorConstants.ELEVATOR_PROFILE
 import org.sert2521.offseason2025.ManipulatorTargets
 import org.sert2521.offseason2025.MetaConstants
+import org.sert2521.offseason2025.utils.ManipulatorTarget
 
 object Elevator : SubsystemBase() {
-    private val io = when (MetaConstants.currentRealityMode) {
-        MetaConstants.RealityMode.REAL -> ElevatorIOSpark()
-        else -> object : ElevatorIO {}
-    }
-
-    private val telemetry = when(MetaConstants.currentRealityMode) {
-        MetaConstants.RealityMode.REAL -> ElevatorTelemetry(mechanism2dEnabled = false, mechanism3dEnabled = false)
-        else -> ElevatorTelemetry(mechanism2dEnabled = true, mechanism3dEnabled = true)
-    }
+    private val io = ElevatorIOSpark()
 
     private val ioInputs = LoggedElevatorIOInputs()
 
     private val profile = TrapezoidProfile(ELEVATOR_PROFILE)
 
+    var target = ManipulatorTarget.STOW
     var goal = TrapezoidProfile.State(0.0, 0.0)
     private var currentState = TrapezoidProfile.State(0.0, 0.0)
 
@@ -35,8 +29,6 @@ object Elevator : SubsystemBase() {
     override fun periodic() {
         io.updateInputs(ioInputs)
         Logger.processInputs("Elevator", ioInputs)
-
-        telemetry.update()
     }
 
     fun setVoltage(voltage: Double) {
@@ -78,7 +70,7 @@ object Elevator : SubsystemBase() {
     }
 
     fun setElevatorSafeCommand(goalMeters: Double): Command {
-        return Commands.waitUntil { /*!Dispenser.getBlocked()*/false }
+        return Commands.waitUntil { /*!Dispenser.getBlocked()*/true }
             .andThen(setElevatorCommand(goalMeters))
     }
 

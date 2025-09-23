@@ -5,17 +5,17 @@ import edu.wpi.first.apriltag.AprilTagFields
 import edu.wpi.first.math.geometry.Pose2d
 import edu.wpi.first.math.geometry.Rotation2d
 import edu.wpi.first.math.geometry.Translation2d
-import org.sert2521.offseason2025.utils.ManipulatorGoal
+import org.sert2521.offseason2025.utils.ManipulatorGoalState
 import kotlin.math.PI
 import kotlin.math.cos
 import kotlin.math.sin
 
 object ManipulatorTargets {
-    val stow = ManipulatorGoal(0.0, 0.0)
-    val l1 = ManipulatorGoal(0.0, 0.0)
-    val l2 = ManipulatorGoal(0.0, 0.0)
-    val l3 = ManipulatorGoal(0.0, 0.0)
-    val l4 = ManipulatorGoal(0.0, 0.0)
+    val stow = ManipulatorGoalState(0.0, 0.0)
+    val l1 = ManipulatorGoalState(0.0, 0.0)
+    val l2 = ManipulatorGoalState(0.0, 0.0)
+    val l3 = ManipulatorGoalState(0.0, 0.0)
+    val l4 = ManipulatorGoalState(0.0, 0.0)
 }
 
 object VisionTargetPositions {

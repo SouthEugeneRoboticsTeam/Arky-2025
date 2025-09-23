@@ -2,6 +2,7 @@ package org.sert2521.offseason2025.subsystems.ramp
 
 import edu.wpi.first.wpilibj2.command.Command
 import edu.wpi.first.wpilibj2.command.SubsystemBase
+import org.littletonrobotics.junction.Logger
 import org.sert2521.offseason2025.RampConstants.INTAKE_SPEED
 
 object Ramp: SubsystemBase() {
@@ -12,6 +13,10 @@ object Ramp: SubsystemBase() {
         defaultCommand = idleCommand()
     }
 
+    override fun periodic() {
+        io.updateInputs(ioInputs)
+        Logger.processInputs("Ramp", ioInputs)
+    }
 
     // TODO: Change
     fun idleCommand(): Command {

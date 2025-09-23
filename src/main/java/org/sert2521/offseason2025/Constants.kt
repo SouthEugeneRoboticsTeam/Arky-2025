@@ -3,13 +3,20 @@ package org.sert2521.offseason2025
 import edu.wpi.first.math.trajectory.TrapezoidProfile
 import edu.wpi.first.units.Units.Pounds
 import edu.wpi.first.wpilibj.RobotBase
-import kotlin.math.PI
+import org.sert2521.offseason2025.utils.ManipulatorGoalState
 
 object DispenserConstants{
-
+    // For L1, reverse outtake
+    var reverseOuttake = false
 }
 
 object ElevatorConstants{
+    val stow = ManipulatorGoalState( 0.0, 0.0)
+    val l1 = ManipulatorGoalState(0.0, 0.0)
+    val l2 = ManipulatorGoalState(0.0, 0.0)
+    val l3 = ManipulatorGoalState(0.0, 0.0)
+    val l4 = ManipulatorGoalState(0.0, 0.0)
+
     const val ELEVATOR_CURRENT_LIMIT = 40
 
     const val ELEVATOR_P = 4.0
@@ -67,9 +74,9 @@ object ElectronicIDs {
     const val ELEVATOR_LEFT_ID = 13
     const val ELEVATOR_RIGHT_ID = 14
 
-    const val WRIST_ID = 0
+    const val RAMP_ID = 15
 
-    const val RAMP_ID = 0
+    const val WRIST_ID = 16
 
-    const val DISPENSER_ID = 0
+    const val DISPENSER_ID = 17
 }

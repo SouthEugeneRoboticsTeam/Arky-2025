@@ -37,41 +37,16 @@ object Drivetrain : SubsystemBase() {
     @JvmField
     val odometryLock: ReentrantLock = ReentrantLock()
 
-    val swerveDriveSimulation = //Doesn't create it in REAL or REPLAY to save objects
-        if (MetaConstants.currentRealityMode == MetaConstants.RealityMode.SIM) {
-            SwerveDriveSimulation(
-                SwerveConstants.mapleSimConfig,
-                Pose2d(3.0, 3.0, Rotation2d())
-            )
-        } else {
-            null
-        }
-
     private val gyroInputs = LoggedGyroIOInputs()
-    private val gyroIO = when (MetaConstants.currentRealityMode) {
-        MetaConstants.RealityMode.REAL -> GyroIONavX()
-        MetaConstants.RealityMode.SIM -> GyroIOSim(swerveDriveSimulation!!.gyroSimulation)
-        MetaConstants.RealityMode.REPLAY -> object : GyroIO {}
-    }
+    private val gyroIO = GyroIONavX()
 
     private val visionInputsLeft = LoggedVisionIOInputs()
     private val visionInputsRight = LoggedVisionIOInputs()
 
-    private val visionIOLeft = when (MetaConstants.currentRealityMode) {
-        MetaConstants.RealityMode.REAL -> VisionIOLimelight("limelight-left")
-        else -> object : VisionIO {}
-    }
-    private val visionIORight = when (MetaConstants.currentRealityMode) {
-        MetaConstants.RealityMode.REAL -> VisionIOLimelight("limelight-right")
-        else -> object : VisionIO {}
-    }
+    private val visionIOLeft = VisionIOLimelight("limelight-left")
+    private val visionIORight = VisionIOLimelight("limelight-right")
 
-    private val modules =
-        when (MetaConstants.currentRealityMode) {
-            MetaConstants.RealityMode.REAL -> Array(4) { Module(ModuleIOSpark(it), it) }
-            MetaConstants.RealityMode.SIM -> Array(4) { Module(ModuleIOSim(swerveDriveSimulation!!.modules[it]), it) }
-            MetaConstants.RealityMode.REPLAY -> Array(4) { Module(object : ModuleIO {}, it) }
-        }
+    private val modules = Array(4) { Module(ModuleIOSpark(it), it) }
 
 
     private var fed = true
@@ -106,8 +81,6 @@ object Drivetrain : SubsystemBase() {
     val field = Field2d()
 
     init {
-        //while it's TECHNICALLY not just copy pasted, I'll still report this as swerve template whatevers
-        //because I would NOT know how to program this on my own
         HAL.report(
             FRCNetComm.tResourceType.kResourceType_RobotDrive,
             FRCNetComm.tInstances.kRobotDriveSwerve_AdvantageKit
@@ -118,10 +91,6 @@ object Drivetrain : SubsystemBase() {
         SmartDashboard.putData("Robot Pose", field)
 
         //I'm putting the auto builder somewhere else because this is ridiculous
-
-        if (MetaConstants.currentRealityMode == MetaConstants.RealityMode.SIM) {
-            SimulatedArena.getInstance().addDriveTrainSimulation(swerveDriveSimulation)
-        }
     }
 
     override fun periodic() {
@@ -222,10 +191,6 @@ object Drivetrain : SubsystemBase() {
 
         Logger.recordOutput("Odometry/Robot Pose", getPose())
         Logger.recordOutput("Odometry/Robot Rotations", getPose().rotation.rotations)
-
-        if (MetaConstants.currentRealityMode == MetaConstants.RealityMode.SIM) {
-            Logger.recordOutput("FieldSimulation/RobotPosition", swerveDriveSimulation!!.simulatedDriveTrainPose)
-        }
     }
 
     /* === Setters === */
@@ -321,9 +286,8 @@ object Drivetrain : SubsystemBase() {
     }
 
     fun getChassisSpeeds(): ChassisSpeeds {
-        //THE IDE IS LYING I SWEAR THIS WORKS
-        //I'VE ALREADY SPENT HOURS OF MY LIFE TRYING TO STOP THIS FROM HAPPENING
-        //THIS IS THE ONLY WAY TO GET IT TO WORK DISREGARD EVERYTHING THE IDE TELLS YOU
+        // YIPEEEEEE THE IDE DOESN'T SCREAM AT ME ANYMORE
+        // MY LIFE HAS GOTTEN 5 TIMES BETTER
         return kinematics.toChassisSpeeds(*getModuleStates())
     }
 
@@ -344,11 +308,7 @@ object Drivetrain : SubsystemBase() {
     }
 
     fun getPose(): Pose2d {
-        return if (MetaConstants.currentRealityMode == MetaConstants.RealityMode.SIM){
-            swerveDriveSimulation!!.simulatedDriveTrainPose
-        } else {
-            poseEstimator.estimatedPosition
-        }
+        return poseEstimator.estimatedPosition
     }
 
     fun getRotation(): Rotation2d {
