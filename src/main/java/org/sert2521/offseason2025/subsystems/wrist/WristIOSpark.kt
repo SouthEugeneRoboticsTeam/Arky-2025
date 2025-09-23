@@ -16,9 +16,10 @@ import org.sert2521.offseason2025.WristConstants.WRIST_P
 import kotlin.math.PI
 import kotlin.math.cos
 
-class WristIOSpark:WristIO {
+class WristIOSpark : WristIO {
     private val motor = SparkMax(WRIST_ID, SparkLowLevel.MotorType.kBrushless)
     private val config = SparkMaxConfig()
+
     init {
         config.idleMode(SparkBaseConfig.IdleMode.kBrake)
             .inverted(false)

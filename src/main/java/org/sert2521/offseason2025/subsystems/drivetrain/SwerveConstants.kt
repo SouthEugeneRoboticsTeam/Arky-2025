@@ -7,10 +7,7 @@ import edu.wpi.first.math.geometry.Rotation2d
 import edu.wpi.first.math.geometry.Translation2d
 import edu.wpi.first.math.system.plant.DCMotor
 import edu.wpi.first.math.trajectory.TrapezoidProfile
-import edu.wpi.first.units.Units.Inches
-import edu.wpi.first.units.Units.KilogramSquareMeters
-import edu.wpi.first.units.Units.Meters
-import edu.wpi.first.units.Units.Volts
+import edu.wpi.first.units.Units.*
 import org.ironmaple.simulation.drivesims.COTS
 import org.ironmaple.simulation.drivesims.configs.DriveTrainSimulationConfig
 import org.ironmaple.simulation.drivesims.configs.SwerveModuleSimulationConfig

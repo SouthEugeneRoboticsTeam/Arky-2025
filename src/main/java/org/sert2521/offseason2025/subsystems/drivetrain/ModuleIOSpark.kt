@@ -87,7 +87,7 @@ class ModuleIOSpark(module: Int) : ModuleIO {
             .outputCurrentPeriodMs(20)
 
 
-        SparkUtil.tryUntilOk(driveMotor, 5) {
+        tryUntilOk(driveMotor, 5) {
             driveMotor.configure(
                 driveConfig,
                 SparkBase.ResetMode.kResetSafeParameters,
@@ -95,7 +95,7 @@ class ModuleIOSpark(module: Int) : ModuleIO {
             )
         }
 
-        SparkUtil.tryUntilOk(driveMotor, 5) {
+        tryUntilOk(driveMotor, 5) {
             driveEncoder.setPosition(0.0)
         }
 
@@ -132,7 +132,7 @@ class ModuleIOSpark(module: Int) : ModuleIO {
             .busVoltagePeriodMs(20)
             .outputCurrentPeriodMs(20)
 
-        SparkUtil.tryUntilOk(turnMotor, 5) {
+        tryUntilOk(turnMotor, 5) {
             turnMotor.configure(
                 turnConfig,
                 SparkBase.ResetMode.kResetSafeParameters,
@@ -222,7 +222,7 @@ class ModuleIOSpark(module: Int) : ModuleIO {
     }
 
     override fun updateTurnEncoder(rotation: Rotation2d) {
-        turnEncoder.setPosition(rotation.radians)
+        turnEncoder.position = rotation.radians
     }
 
     override fun setCurrentLimit(limit: Int) {

@@ -3,7 +3,6 @@ package org.sert2521.offseason2025
 import edu.wpi.first.hal.FRCNetComm.tInstances
 import edu.wpi.first.hal.FRCNetComm.tResourceType
 import edu.wpi.first.hal.HAL
-import edu.wpi.first.wpilibj.RobotBase
 import edu.wpi.first.wpilibj.Threads
 import edu.wpi.first.wpilibj.util.WPILibVersion
 import edu.wpi.first.wpilibj2.command.Command
@@ -27,16 +26,13 @@ import org.sert2521.offseason2025.subsystems.drivetrain.Drivetrain
  * the `Main.kt` file in the project. (If you use the IDE's Rename or Move refactorings when renaming the
  * object or package, it will get changed everywhere.)
  */
-object Robot : LoggedRobot()
-{
-
+object Robot : LoggedRobot() {
 
 
     private var autonomousCommand: Command? = null
 
 
-    init
-    {
+    init {
         // Report the use of the Kotlin Language for "FRC Usage Report" statistics.
         // Please retain this line so that Kotlin's growing use by teams is seen by FRC/WPI.
         HAL.report(tResourceType.kResourceType_Language, tInstances.kLanguage_Kotlin, 0, WPILibVersion.Version)
@@ -76,8 +72,7 @@ object Robot : LoggedRobot()
     }
 
 
-    override fun robotPeriodic()
-    {
+    override fun robotPeriodic() {
         // Switch thread to high priority to improve loop timing
         Threads.setCurrentThreadPriority(true, 99)
 
@@ -92,55 +87,45 @@ object Robot : LoggedRobot()
         Threads.setCurrentThreadPriority(false, 10)
     }
 
-    override fun disabledInit()
-    {
+    override fun disabledInit() {
 
     }
 
-    override fun disabledPeriodic()
-    {
+    override fun disabledPeriodic() {
 
     }
 
-    override fun autonomousInit()
-    {
+    override fun autonomousInit() {
         autonomousCommand?.schedule()
     }
 
-    override fun autonomousPeriodic()
-    {
+    override fun autonomousPeriodic() {
 
     }
 
-    override fun teleopInit()
-    {
+    override fun teleopInit() {
         autonomousCommand?.cancel()
     }
 
     /** This method is called periodically during operator control.  */
-    override fun teleopPeriodic()
-    {
+    override fun teleopPeriodic() {
 
     }
 
-    override fun testInit()
-    {
+    override fun testInit() {
         // Cancels all running commands at the start of test mode.
         CommandScheduler.getInstance().cancelAll()
     }
 
-    override fun testPeriodic()
-    {
+    override fun testPeriodic() {
 
     }
 
-    override fun simulationInit()
-    {
+    override fun simulationInit() {
 
     }
 
-    override fun simulationPeriodic()
-    {
+    override fun simulationPeriodic() {
 
     }
 }

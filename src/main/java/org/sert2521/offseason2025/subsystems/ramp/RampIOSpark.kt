@@ -6,7 +6,7 @@ import com.revrobotics.spark.config.SparkBaseConfig
 import com.revrobotics.spark.config.SparkMaxConfig
 import org.sert2521.offseason2025.ElectronicIDs.RAMP_ID
 
-class RampIOSpark:RampIO {
+class RampIOSpark : RampIO {
     private val motor = SparkMax(RAMP_ID, SparkLowLevel.MotorType.kBrushless)
 
     init {

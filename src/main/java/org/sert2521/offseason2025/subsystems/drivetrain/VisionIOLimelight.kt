@@ -1,10 +1,7 @@
 package org.sert2521.offseason2025.subsystems.drivetrain
 
 import edu.wpi.first.math.geometry.Pose2d
-import edu.wpi.first.wpilibj.DriverStation
 import org.sert2521.offseason2025.utils.LimelightHelpers
-import org.sert2521.offseason2025.Input
-import org.sert2521.offseason2025.Robot
 
 class VisionIOLimelight(private val name: String) : VisionIO {
 

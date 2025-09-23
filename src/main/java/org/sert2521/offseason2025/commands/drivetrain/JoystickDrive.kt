@@ -1,11 +1,6 @@
 package org.sert2521.offseason2025.commands.drivetrain
 
-import edu.wpi.first.math.geometry.Rotation2d
-import edu.wpi.first.math.kinematics.ChassisSpeeds
 import edu.wpi.first.wpilibj2.command.Command
-import org.littletonrobotics.junction.Logger
-import org.sert2521.offseason2025.Input
-import org.sert2521.offseason2025.subsystems.drivetrain.Drivetrain
 
 class JoystickDrive(private val fieldOriented: Boolean = true) : Command() {
 

@@ -6,7 +6,6 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition
 import edu.wpi.first.math.kinematics.SwerveModuleState
 import edu.wpi.first.wpilibj.Alert
 import org.littletonrobotics.junction.Logger
-import kotlin.collections.get
 
 class Module(private val io: ModuleIO, private val index: Int) {
     private val inputs = LoggedModuleIOInputs()

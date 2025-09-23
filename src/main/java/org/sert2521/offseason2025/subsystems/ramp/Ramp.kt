@@ -5,7 +5,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase
 import org.littletonrobotics.junction.Logger
 import org.sert2521.offseason2025.RampConstants.INTAKE_SPEED
 
-object Ramp: SubsystemBase() {
+object Ramp : SubsystemBase() {
     private val io = RampIOSpark()
     private val ioInputs = LoggedRampIOInputs()
 

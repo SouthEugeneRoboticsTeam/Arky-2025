@@ -3,7 +3,6 @@ package org.sert2521.offseason2025.commands.drivetrain
 import edu.wpi.first.wpilibj.Timer
 import edu.wpi.first.wpilibj2.command.Command
 import edu.wpi.first.wpilibj2.command.Commands
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup
 import org.sert2521.offseason2025.subsystems.drivetrain.Drivetrain
 import org.sert2521.offseason2025.subsystems.drivetrain.SwerveConstants
 import java.text.DecimalFormat

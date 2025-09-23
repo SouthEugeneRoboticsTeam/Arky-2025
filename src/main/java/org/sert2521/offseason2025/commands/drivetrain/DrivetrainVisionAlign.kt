@@ -9,7 +9,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds
 import edu.wpi.first.math.trajectory.TrapezoidProfile
 import edu.wpi.first.wpilibj2.command.Command
 import org.littletonrobotics.junction.Logger
-import org.sert2521.offseason2025.ManipulatorTargets
+import org.sert2521.offseason2025.ElevatorConstants
 import org.sert2521.offseason2025.subsystems.drivetrain.Drivetrain
 import org.sert2521.offseason2025.subsystems.drivetrain.SwerveConstants
 import org.sert2521.offseason2025.subsystems.elevator.Elevator
@@ -91,7 +91,7 @@ class DrivetrainVisionAlign(val alignLeft: Boolean) : Command() {
                 ChassisSpeeds(driveResult * cos(angle), driveResult * sin(angle), angleResult),
                 MathUtil.interpolate(
                     SwerveConstants.DRIVE_ACCEL_FAST, SwerveConstants.DRIVE_ACCEL_SLOW,
-                    Elevator.getPosition() / ManipulatorTargets.l4.elevatorGoalMeters
+                    Elevator.getPosition() / ElevatorConstants.l4.elevatorGoalMeters
                 ),
                 Rotation2d()
             )

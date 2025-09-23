@@ -1,7 +1,6 @@
 package org.sert2521.offseason2025.subsystems.drivetrain
 
 import edu.wpi.first.math.geometry.Rotation2d
-import edu.wpi.first.wpilibj.MotorSafety
 import org.team9432.annotation.Logged
 
 //get translated idiot

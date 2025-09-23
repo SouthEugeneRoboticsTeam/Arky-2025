@@ -6,9 +6,8 @@ import edu.wpi.first.wpilibj2.command.Command
 import edu.wpi.first.wpilibj2.command.Commands
 import edu.wpi.first.wpilibj2.command.SubsystemBase
 import org.littletonrobotics.junction.Logger
+import org.sert2521.offseason2025.ElevatorConstants
 import org.sert2521.offseason2025.ElevatorConstants.ELEVATOR_PROFILE
-import org.sert2521.offseason2025.ManipulatorTargets
-import org.sert2521.offseason2025.MetaConstants
 
 object Elevator : SubsystemBase() {
     private val io = ElevatorIOSpark()
@@ -48,10 +47,11 @@ object Elevator : SubsystemBase() {
     fun setElevatorCommand(goalMeters: Double): Command {
         /* Sets the goal of the motion profile, and then executes the calculations required
             then sets the motor setpoint to the result */
-        return startRun({
-            goal.position = goalMeters
-            goal.velocity = 0.0
-        },
+        return startRun(
+            {
+                goal.position = goalMeters
+                goal.velocity = 0.0
+            },
             {
                 currentState = profile.calculate(0.02, currentState, goal)
 
@@ -76,7 +76,7 @@ object Elevator : SubsystemBase() {
         // If it's at stow, then set the voltage to 0
         // Otherwise just run the profile without a new goal until another goal is set
         return run {
-            if (goal.position == ManipulatorTargets.stow.elevatorGoalMeters) {
+            if (goal.position == ElevatorConstants.stow.elevatorGoalMeters) {
                 io.setVoltage(0.0)
             } else {
                 io.setReference(currentState.position, currentState.velocity)

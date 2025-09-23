@@ -11,5 +11,5 @@ interface RampIO {
 
     fun updateInputs(inputs: RampIOInputs)
 
-    fun setSpeed(speed:Double)
+    fun setSpeed(speed: Double)
 }
