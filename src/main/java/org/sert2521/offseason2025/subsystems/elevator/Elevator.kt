@@ -9,7 +9,6 @@ import org.littletonrobotics.junction.Logger
 import org.sert2521.offseason2025.ElevatorConstants.ELEVATOR_PROFILE
 import org.sert2521.offseason2025.ManipulatorTargets
 import org.sert2521.offseason2025.MetaConstants
-import org.sert2521.offseason2025.utils.ManipulatorTarget
 
 object Elevator : SubsystemBase() {
     private val io = ElevatorIOSpark()
@@ -18,7 +17,6 @@ object Elevator : SubsystemBase() {
 
     private val profile = TrapezoidProfile(ELEVATOR_PROFILE)
 
-    var target = ManipulatorTarget.STOW
     var goal = TrapezoidProfile.State(0.0, 0.0)
     private var currentState = TrapezoidProfile.State(0.0, 0.0)
 
