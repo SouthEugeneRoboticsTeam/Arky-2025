@@ -1,9 +1,12 @@
 package org.sert2521.offseason2025.subsystems.ramp
 
 import edu.wpi.first.wpilibj2.command.Command
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup
 import edu.wpi.first.wpilibj2.command.SubsystemBase
 import org.littletonrobotics.junction.Logger
 import org.sert2521.offseason2025.RampConstants.INTAKE_SPEED
+import org.sert2521.offseason2025.RampConstants.RECENTER_SPEED
+import org.sert2521.offseason2025.subsystems.dispenser.Dispenser
 
 object Ramp : SubsystemBase() {
     private val io = RampIOSpark()
@@ -18,10 +21,13 @@ object Ramp : SubsystemBase() {
         Logger.processInputs("Ramp", ioInputs)
     }
 
-    // TODO: Change
     fun idleCommand(): Command {
         return run {
-            io.setSpeed(0.0)
+            if (Dispenser.getBlocked()) {
+                io.setSpeed(INTAKE_SPEED)
+            } else {
+                io.setSpeed(0.0)
+            }
         }
     }
 
@@ -33,8 +39,9 @@ object Ramp : SubsystemBase() {
 
     // TODO: Change
     fun recenterCommand(): Command {
-        return run {
-            io.setSpeed(0.0)
-        }
+        return SequentialCommandGroup(
+            run { io.setSpeed(RECENTER_SPEED) }.until { !Dispenser.getBlocked() },
+            intakeCommand().withTimeout(2.0)
+        )
     }
 }

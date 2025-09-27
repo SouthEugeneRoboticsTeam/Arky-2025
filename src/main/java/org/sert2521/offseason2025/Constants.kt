@@ -78,9 +78,9 @@ object ElectronicIDs {
     const val ELEVATOR_LEFT_ID = 13
     const val ELEVATOR_RIGHT_ID = 14
 
-    const val RAMP_ID = 15
+    const val RAMP_ID = 16
 
-    const val WRIST_ID = 16
+    const val WRIST_ID = 15
 
     const val DISPENSER_ID = 17
 

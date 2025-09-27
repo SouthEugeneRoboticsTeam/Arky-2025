@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase
 import org.littletonrobotics.junction.Logger
 import org.sert2521.offseason2025.ElevatorConstants
 import org.sert2521.offseason2025.ElevatorConstants.ELEVATOR_PROFILE
+import org.sert2521.offseason2025.subsystems.dispenser.Dispenser
 
 object Elevator : SubsystemBase() {
     private val io = ElevatorIOSpark()
@@ -68,7 +69,7 @@ object Elevator : SubsystemBase() {
     }
 
     fun setElevatorSafeCommand(goalMeters: Double): Command {
-        return Commands.waitUntil { /*!Dispenser.getBlocked()*/true }
+        return Commands.waitUntil { !Dispenser.getBlocked() }
             .andThen(setElevatorCommand(goalMeters))
     }
 

@@ -21,7 +21,7 @@ object Dispenser : SubsystemBase() {
     var reverseOuttake = false
 
     init {
-        defaultCommand = run { io.setMotor(0.0) }
+        defaultCommand = run { io.setSpeed(0.0) }
 
         intakeTrigger.onTrue(intakeCommand())
     }
@@ -45,19 +45,23 @@ object Dispenser : SubsystemBase() {
 
     fun intakeCommand(): Command {
         return SequentialCommandGroup(
-            run { io.setMotor(INTAKE_SPEED_FIRST) }.until { !getBlocked() },
-            run { io.setMotor(INTAKE_SPEED_SECOND) }.until { getBlocked() },
-            run { io.setMotor(INTAKE_SPEED_THIRD) }.until { !getBlocked() }
+            run { io.setSpeed(INTAKE_SPEED_FIRST) }.until { !getBlocked() },
+            run { io.setSpeed(INTAKE_SPEED_SECOND) }.until { getBlocked() },
+            run { io.setSpeed(INTAKE_SPEED_THIRD) }.until { !getBlocked() }
         )
     }
 
     fun outtakeCommand(): Command {
         return run {
             if (reverseOuttake) {
-                io.setMotor(OUTTAKE_L4_SPEED)
+                io.setSpeed(OUTTAKE_L4_SPEED)
             } else {
-                io.setMotor(OUTTAKE_NORMAL_SPEED)
+                io.setSpeed(OUTTAKE_NORMAL_SPEED)
             }
         }.withTimeout(OUTTAKE_TIME)
+    }
+
+    fun recenterCommand(): Command {
+        return run { io.setSpeed(INTAKE_SPEED_SECOND) }.until { !getBlocked() }
     }
 }

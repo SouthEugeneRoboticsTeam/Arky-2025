@@ -30,7 +30,7 @@ class DispenserIOSpark : DispenserIO {
         inputs.dispenserBeambreakClear = dispenserBeambreak.get()
     }
 
-    override fun setMotor(speed: Double) {
+    override fun setSpeed(speed: Double) {
         motor.set(0.0)
     }
 }

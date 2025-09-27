@@ -13,5 +13,5 @@ interface DispenserIO {
 
     fun updateInputs(inputs: DispenserIOInputs)
 
-    fun setMotor(speed: Double)
+    fun setSpeed(speed: Double)
 }

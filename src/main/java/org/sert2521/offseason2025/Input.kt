@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger
 import org.sert2521.offseason2025.commands.drivetrain.DrivetrainVisionAlign
 import org.sert2521.offseason2025.commands.drivetrain.JoystickDrive
 import org.sert2521.offseason2025.commands.manipulator.ManipulatorRoutines
+import org.sert2521.offseason2025.subsystems.dispenser.Dispenser
 import org.sert2521.offseason2025.subsystems.drivetrain.Drivetrain
 import org.sert2521.offseason2025.subsystems.ramp.Ramp
 
@@ -61,8 +62,8 @@ object Input {
         maniL3.onTrue(ManipulatorRoutines.l3())
         maniL4.onTrue(ManipulatorRoutines.l4())
 
-        //dispenserOuttake.whileTrue(Dispenser.outtakeCommand())
-        //dispenserReset.onTrue(Dispenser.recenterCommand().alongWith(Ramp.recenterCommand()))
+        dispenserOuttake.whileTrue(Dispenser.outtakeCommand())
+        dispenserReset.onTrue(Dispenser.recenterCommand().alongWith(Ramp.recenterCommand()))
         rampIntake.whileTrue(Ramp.intakeCommand())
 
     }
