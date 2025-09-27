@@ -6,8 +6,14 @@ import edu.wpi.first.wpilibj.RobotBase
 import org.sert2521.offseason2025.utils.ManipulatorGoalState
 
 object DispenserConstants {
-    // For L1, reverse outtake
-    var reverseOuttake = false
+    const val INTAKE_SPEED_FIRST = 0.2
+    const val INTAKE_SPEED_SECOND = 0.0
+    const val INTAKE_SPEED_THIRD = 0.0
+
+    const val OUTTAKE_NORMAL_SPEED = 0.0
+    const val OUTTAKE_L4_SPEED = 0.0
+    const val OUTTAKE_TIME = 1.0
+
 }
 
 object ElevatorConstants {
@@ -36,8 +42,6 @@ object WristConstants {
 
     const val WRIST_P = 0.0
     const val WRIST_D = 0.0
-
-    const val WRIST_G = 0.0
 
     const val WRIST_ABS_ENCODER_MULTIPLIER = (15.0 * 24.0) / (36.0 * 16.0)
 }
@@ -79,4 +83,7 @@ object ElectronicIDs {
     const val WRIST_ID = 16
 
     const val DISPENSER_ID = 17
+
+    const val DISPENSER_BEAMBREAK_ID = 0
+    const val RAMP_BEAMBREAK_ID = 0
 }

@@ -11,10 +11,7 @@ import org.sert2521.offseason2025.ElectronicIDs.WRIST_ID
 import org.sert2521.offseason2025.WristConstants.WRIST_ABS_ENCODER_MULTIPLIER
 import org.sert2521.offseason2025.WristConstants.WRIST_CURRENT_LIMIT
 import org.sert2521.offseason2025.WristConstants.WRIST_D
-import org.sert2521.offseason2025.WristConstants.WRIST_G
 import org.sert2521.offseason2025.WristConstants.WRIST_P
-import kotlin.math.PI
-import kotlin.math.cos
 
 class WristIOSpark : WristIO {
     private val motor = SparkMax(WRIST_ID, SparkLowLevel.MotorType.kBrushless)
@@ -34,8 +31,6 @@ class WristIOSpark : WristIO {
             .inverted(false)
             .positionConversionFactor(WRIST_ABS_ENCODER_MULTIPLIER * (16.0 / 24.0))
             .velocityConversionFactor(WRIST_ABS_ENCODER_MULTIPLIER * (16.0 / 24.0) / 60.0)
-
-        config.softLimit
 
         config.closedLoop
             .p(WRIST_P)
@@ -59,8 +54,7 @@ class WristIOSpark : WristIO {
         motor.closedLoopController.setReference(
             setpointPosition,
             SparkBase.ControlType.kPosition,
-            ClosedLoopSlot.kSlot0,
-            WRIST_G * cos(setpointPosition * 2 * PI)
+            ClosedLoopSlot.kSlot0
         )
     }
 
