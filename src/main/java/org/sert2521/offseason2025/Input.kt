@@ -37,8 +37,7 @@ object Input {
     private val dispenserReset = gunnerController.button(14)
     private val rampIntake = gunnerController.button(13)
 
-    // TODO: Change when dispenser
-    private val intakeRumble = Trigger { false }
+    private val intakeRumble = Trigger { Dispenser.getBlocked() }
 
     private var rotationOffset = Rotation2d(0.0)
 
@@ -94,7 +93,8 @@ object Input {
     }
 
     fun rumbleBlip(): Command {
-        return runOnce({ setRumble(0.8) }).andThen(Commands.waitSeconds(0.2))
+        return runOnce({ setRumble(0.8) })
+            .andThen(Commands.waitSeconds(0.2))
             .andThen(runOnce({ setRumble(0.0) }))
     }
 }
