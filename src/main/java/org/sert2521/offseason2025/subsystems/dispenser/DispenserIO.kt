@@ -7,6 +7,7 @@ interface DispenserIO {
     open class DispenserIOInputs {
         var appliedVolts = 0.0
         var currentAmps = 0.0
+        var positionEncoder = 0.0
         var rampBeambreakClear = false
         var dispenserBeambreakClear = false
     }
@@ -14,4 +15,8 @@ interface DispenserIO {
     fun updateInputs(inputs: DispenserIOInputs)
 
     fun setSpeed(speed: Double)
+
+    fun resetEncoder()
+
+    fun setPIDReference(setpoint:Double)
 }

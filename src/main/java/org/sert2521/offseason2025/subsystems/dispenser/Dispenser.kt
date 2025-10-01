@@ -11,6 +11,7 @@ import org.sert2521.offseason2025.DispenserConstants.INTAKE_SPEED_THIRD
 import org.sert2521.offseason2025.DispenserConstants.OUTTAKE_L4_SPEED
 import org.sert2521.offseason2025.DispenserConstants.OUTTAKE_NORMAL_SPEED
 import org.sert2521.offseason2025.DispenserConstants.OUTTAKE_TIME
+import org.sert2521.offseason2025.DispenserConstants.PID_TO_BACK_DISTANCE
 
 object Dispenser : SubsystemBase() {
     private val io = DispenserIOSpark()
@@ -21,7 +22,7 @@ object Dispenser : SubsystemBase() {
     var reverseOuttake = false
 
     init {
-        defaultCommand = run { io.setSpeed(0.0) }
+        defaultCommand = null
 
         intakeTrigger.onTrue(intakeCommand())
     }
@@ -63,5 +64,12 @@ object Dispenser : SubsystemBase() {
 
     fun recenterCommand(): Command {
         return run { io.setSpeed(INTAKE_SPEED_SECOND) }.until { !getBlocked() }
+    }
+
+    fun pidBackward(): Command {
+        return runOnce {
+            io.resetEncoder()
+            io.setPIDReference(PID_TO_BACK_DISTANCE)
+        }
     }
 }

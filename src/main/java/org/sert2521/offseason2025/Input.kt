@@ -53,8 +53,13 @@ object Input {
         }))
 
         stopJoystickFieldOrientation.whileTrue(JoystickDrive(false))
+
+        simpleVisionAlignLeft.onTrue(ManipulatorRoutines.activateBufferCommand())
         simpleVisionAlignLeft.whileTrue(DrivetrainVisionAlign(true))
+
+        simpleVisionAlignRight.onTrue(ManipulatorRoutines.activateBufferCommand())
         simpleVisionAlignRight.whileTrue(DrivetrainVisionAlign(false))
+
 
         maniStow.onTrue(ManipulatorRoutines.stow())
         maniL1.onTrue(ManipulatorRoutines.l1())
