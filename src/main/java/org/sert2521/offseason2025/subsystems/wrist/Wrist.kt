@@ -11,11 +11,9 @@ object Wrist : SubsystemBase() {
     private val io = WristIOSpark()
     private val ioInputs = LoggedWristIOInputs()
 
-    init {
-        // YES I KNOW IT'S ELEVATOR CONSTANTS
-        // IT'S CLOSE ENOUGH
-        defaultCommand = setWristCommand(ElevatorConstants.stow.wristGoalRotations)
-    }
+    private var setpoint = ElevatorConstants.intake.wristGoalRotations
+
+    init {}
 
     override fun periodic() {
         io.updateInputs(ioInputs)

@@ -15,6 +15,7 @@ import org.littletonrobotics.junction.wpilog.WPILOGReader
 import org.littletonrobotics.junction.wpilog.WPILOGWriter
 import org.sert2521.offseason2025.MetaConstants.currentRealityMode
 import org.sert2521.offseason2025.subsystems.drivetrain.Drivetrain
+import org.sert2521.offseason2025.subsystems.wrist.Wrist
 
 /**
  * The functions in this object (which basically functions as a singleton class) are called automatically
@@ -43,7 +44,7 @@ object Robot : LoggedRobot() {
         when (currentRealityMode) {
             MetaConstants.RealityMode.REAL -> {
                 // Running on a real robot, log to a USB stick ("/U/logs")
-                Logger.addDataReceiver(WPILOGWriter())
+                // Logger.addDataReceiver(WPILOGWriter())
                 Logger.addDataReceiver(NT4Publisher())
             }
 
@@ -69,22 +70,17 @@ object Robot : LoggedRobot() {
         VisionTargetPositions
         Drivetrain
         Input
+        Wrist
     }
 
 
     override fun robotPeriodic() {
-        // Switch thread to high priority to improve loop timing
-        Threads.setCurrentThreadPriority(true, 99)
-
         // Runs the Scheduler. This is responsible for polling buttons, adding
         // newly-scheduled commands, running already-scheduled commands, removing
         // finished or interrupted commands, and running subsystem periodic() methods.
         // This must be called from the robot's periodic block in order for anything in
         // the Command-based framework to work.
         CommandScheduler.getInstance().run()
-
-        // Return to normal thread priority
-        Threads.setCurrentThreadPriority(false, 10)
     }
 
     override fun disabledInit() {

@@ -1,5 +1,6 @@
 package org.sert2521.offseason2025
 
+import edu.wpi.first.math.MathUtil
 import edu.wpi.first.math.geometry.Pose2d
 import edu.wpi.first.math.geometry.Rotation2d
 import edu.wpi.first.wpilibj.GenericHID
@@ -11,8 +12,11 @@ import edu.wpi.first.wpilibj2.command.button.Trigger
 import org.sert2521.offseason2025.commands.drivetrain.DrivetrainVisionAlign
 import org.sert2521.offseason2025.commands.drivetrain.JoystickDrive
 import org.sert2521.offseason2025.commands.manipulator.ManipulatorRoutines
+import org.sert2521.offseason2025.commands.manipulator.ManipulatorRoutines.ManipulatorPositions
 import org.sert2521.offseason2025.subsystems.dispenser.Dispenser
 import org.sert2521.offseason2025.subsystems.drivetrain.Drivetrain
+import org.sert2521.offseason2025.subsystems.drivetrain.SwerveConstants
+import org.sert2521.offseason2025.subsystems.elevator.Elevator
 import org.sert2521.offseason2025.subsystems.ramp.Ramp
 
 object Input {
@@ -34,6 +38,7 @@ object Input {
     private val maniL4 = gunnerController.button(5)
 
     private val dispenserOuttake = driverController.rightBumper()
+    private val dispenserOuttakeNoBack = driverController.leftBumper()
     private val dispenserReset = gunnerController.button(14)
     private val rampIntake = gunnerController.button(13)
 
@@ -62,14 +67,15 @@ object Input {
 
         maniStow.onTrue(ManipulatorRoutines.stow())
         maniL1.onTrue(ManipulatorRoutines.l1())
-        maniL2.onTrue(ManipulatorRoutines.l2())
-        maniL3.onTrue(ManipulatorRoutines.l3())
-        maniL4.onTrue(ManipulatorRoutines.l4())
+        maniL2.onTrue(ManipulatorRoutines.changeBufferCommand(ManipulatorPositions.L2))
+        maniL3.onTrue(ManipulatorRoutines.changeBufferCommand(ManipulatorPositions.L3))
+        maniL4.onTrue(ManipulatorRoutines.changeBufferCommand(ManipulatorPositions.L4))
 
         dispenserOuttake.whileTrue(Dispenser.outtakeCommand())
+        dispenserOuttakeNoBack.whileTrue(Dispenser.outtakeCommandNoBack())
         dispenserReset.onTrue(Dispenser.recenterCommand().alongWith(Ramp.recenterCommand()))
-        rampIntake.whileTrue(Ramp.intakeCommand())
-
+        rampIntake.onTrue(ManipulatorRoutines.intake()
+            .andThen((Ramp.intakeCommand().alongWith(Dispenser.recenterCommand().asProxy())).until{ !rampIntake.asBoolean }))
     }
 
     fun getJoystickX(): Double {
@@ -90,6 +96,30 @@ object Input {
 
     fun setRumble(amount: Double) {
         driverController.setRumble(GenericHID.RumbleType.kBothRumble, amount)
+    }
+
+    fun getAccelLimit(): Double {
+        val elevatorLimit = MathUtil.interpolate(
+            SwerveConstants.DRIVE_ACCEL_FAST, SwerveConstants.DRIVE_ACCEL_SLOW,
+            Elevator.getPosition() / ElevatorConstants.l4.elevatorGoalMeters
+        )
+        return elevatorLimit
+    }
+
+    fun getDeccelLimit(): Double {
+        val elevatorLimit = MathUtil.interpolate(
+            SwerveConstants.DRIVE_DECCEL_FAST, SwerveConstants.DRIVE_DECCEL_SLOW,
+            Elevator.getPosition() / ElevatorConstants.l4.elevatorGoalMeters
+        )
+        return elevatorLimit
+    }
+
+    fun getSpeedLimit(): Double {
+        val elevatorLimit = MathUtil.interpolate(
+            SwerveConstants.DRIVE_SPEED_FAST, SwerveConstants.DRIVE_SPEED_SLOW,
+            Elevator.getPosition() / ElevatorConstants.l4.elevatorGoalMeters
+        )
+        return MathUtil.interpolate(elevatorLimit, elevatorLimit / 5.0, driverController.rightTriggerAxis)
     }
 
     fun rumbleBlip(): Command {

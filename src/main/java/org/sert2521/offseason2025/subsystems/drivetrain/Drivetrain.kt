@@ -326,14 +326,23 @@ object Drivetrain : SubsystemBase() {
 
     fun getNearestTargetReef(left: Boolean): Pose2d {
         if (left) {
+            Logger.recordOutput("Last Reef Target", getPose().nearest(VisionTargetPositions.reefPositionsLeft))
             return getPose().nearest(VisionTargetPositions.reefPositionsLeft)
         } else {
+            Logger.recordOutput("Last Reef Target", getPose().nearest(VisionTargetPositions.reefPositionsRight))
             return getPose().nearest(VisionTargetPositions.reefPositionsRight)
         }
     }
 
     fun driveBackCommand(): Command {
         val speeds = ChassisSpeeds(-0.7, 0.0, 0.0)
+        return run {
+            driveRobotOriented(speeds)
+        }
+    }
+
+    fun driveForwardCommand(): Command {
+        val speeds = ChassisSpeeds(0.7, 0.0, 0.0)
         return run {
             driveRobotOriented(speeds)
         }

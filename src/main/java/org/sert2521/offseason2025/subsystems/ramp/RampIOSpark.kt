@@ -1,5 +1,6 @@
 package org.sert2521.offseason2025.subsystems.ramp
 
+import com.revrobotics.spark.SparkBase
 import com.revrobotics.spark.SparkLowLevel
 import com.revrobotics.spark.SparkMax
 import com.revrobotics.spark.config.SparkBaseConfig
@@ -11,9 +12,11 @@ class RampIOSpark : RampIO {
 
     init {
         val config = SparkMaxConfig()
-        config.inverted(false)
+        config.inverted(true)
             .smartCurrentLimit(30)
             .idleMode(SparkBaseConfig.IdleMode.kBrake)
+
+        motor.configure(config, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters)
     }
 
     override fun updateInputs(inputs: RampIO.RampIOInputs) {

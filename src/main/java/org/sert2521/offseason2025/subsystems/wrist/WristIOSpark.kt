@@ -19,16 +19,18 @@ class WristIOSpark : WristIO {
 
     init {
         config.idleMode(SparkBaseConfig.IdleMode.kBrake)
-            .inverted(false)
+            .inverted(true)
             .smartCurrentLimit(WRIST_CURRENT_LIMIT)
 
         config.absoluteEncoder
             .inverted(false)
             .positionConversionFactor(WRIST_ABS_ENCODER_MULTIPLIER)
             .velocityConversionFactor(WRIST_ABS_ENCODER_MULTIPLIER / 60.0)
+            .zeroCentered(true)
+            .zeroOffset(1-0.297+0.25)
+
 
         config.encoder
-            .inverted(false)
             .positionConversionFactor(WRIST_ABS_ENCODER_MULTIPLIER * (16.0 / 24.0))
             .velocityConversionFactor(WRIST_ABS_ENCODER_MULTIPLIER * (16.0 / 24.0) / 60.0)
 
@@ -36,6 +38,9 @@ class WristIOSpark : WristIO {
             .p(WRIST_P)
             .d(WRIST_D)
             .feedbackSensor(ClosedLoopConfig.FeedbackSensor.kAbsoluteEncoder)
+
+        motor.configure(config, SparkBase.ResetMode.kNoResetSafeParameters, SparkBase.PersistMode.kPersistParameters)
+        motor.encoder.position = motor.absoluteEncoder.position
     }
 
     override fun updateInputs(inputs: WristIO.WristIOInputs) {

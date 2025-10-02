@@ -23,12 +23,14 @@ class DispenserIOSpark : DispenserIO {
         val config = SparkMaxConfig()
 
         config.idleMode(SparkBaseConfig.IdleMode.kBrake)
-            .inverted(false)
+            .inverted(true)
             .smartCurrentLimit(40)
 
         config.closedLoop
             .p(DISPENSER_P)
             .d(DISPENSER_D)
+
+        motor.configure(config, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters)
     }
 
     override fun updateInputs(inputs: DispenserIO.DispenserIOInputs) {
@@ -40,7 +42,7 @@ class DispenserIOSpark : DispenserIO {
     }
 
     override fun setSpeed(speed: Double) {
-        motor.set(0.0)
+        motor.set(speed)
     }
 
     override fun resetEncoder() {

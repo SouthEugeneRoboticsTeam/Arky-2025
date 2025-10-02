@@ -2,6 +2,7 @@ package org.sert2521.offseason2025.commands.drivetrain
 
 import edu.wpi.first.math.MathUtil
 import edu.wpi.first.math.controller.PIDController
+import edu.wpi.first.math.controller.ProfiledPIDController
 import edu.wpi.first.math.filter.Debouncer
 import edu.wpi.first.math.geometry.Pose2d
 import edu.wpi.first.math.geometry.Rotation2d
@@ -13,18 +14,16 @@ import org.sert2521.offseason2025.ElevatorConstants
 import org.sert2521.offseason2025.subsystems.drivetrain.Drivetrain
 import org.sert2521.offseason2025.subsystems.drivetrain.SwerveConstants
 import org.sert2521.offseason2025.subsystems.elevator.Elevator
+import kotlin.div
 import kotlin.math.*
 
 class DrivetrainVisionAlign(val alignLeft: Boolean) : Command() {
-    private val driveProfile = TrapezoidProfile(SwerveConstants.visionAlignProfile)
-    private var currentProfileState = TrapezoidProfile.State(0.0, 0.0)
-
-    private val drivePID = PIDController(
+    private val drivePID = ProfiledPIDController(
         SwerveConstants.VISION_ALIGN_DRIVE_P,
         SwerveConstants.VISION_ALIGN_DRIVE_I,
         SwerveConstants.VISION_ALIGN_DRIVE_D,
+        SwerveConstants.visionAlignProfile
     )
-
     private val anglePID = PIDController(
         SwerveConstants.VISION_ALIGN_ROT_P,
         SwerveConstants.VISION_ALIGN_ROT_I,
@@ -57,35 +56,34 @@ class DrivetrainVisionAlign(val alignLeft: Boolean) : Command() {
         Logger.recordOutput("Target Pose", targetPose)
         xError = Drivetrain.getPose().x - targetPose.x
         yError = Drivetrain.getPose().y - targetPose.y
-
-        currentProfileState = TrapezoidProfile.State(hypot(xError, yError), 0.0)
-        driveProfile.calculate(0.02, currentProfileState, TrapezoidProfile.State(0.0, 0.0))
-
-        drivePID.reset()
+        val test = cos(Drivetrain.getPose().rotation.radians) * hypot(
+            Drivetrain.getChassisSpeeds().vxMetersPerSecond,
+            Drivetrain.getChassisSpeeds().vyMetersPerSecond
+        )
+        drivePID.reset(hypot(xError, yError))
         anglePID.reset()
+
     }
 
     override fun execute() {
-        currentProfileState = driveProfile.calculate(0.02, currentProfileState, TrapezoidProfile.State(0.0, 0.0))
-
         xError = Drivetrain.getPose().x - targetPose.x
         yError = Drivetrain.getPose().y - targetPose.y
 
         angle = atan2(yError, xError)
 
-
-        driveResult = drivePID.calculate(hypot(xError, yError), currentProfileState.position)
-        if (drivePID.atSetpoint()) {
+        driveResult = drivePID.calculate(hypot(xError, yError), 0.0)
+        if (drivePID.atGoal()) {
             driveResult = 0.0
         }
 
-        driveResult += currentProfileState.velocity * SwerveConstants.VISION_ALIGN_DRIVE_V
+        driveResult += drivePID.setpoint.velocity * SwerveConstants.VISION_ALIGN_DRIVE_V
         angleResult = anglePID.calculate(Drivetrain.getPose().rotation.radians, targetPose.rotation.radians)
 
         if (anglePID.atSetpoint()) {
             angleResult = 0.0
         }
 
+        Logger.recordOutput("Input Chassis Speeds", ChassisSpeeds(driveResult * cos(angle), driveResult * sin(angle), angleResult))
         accelLimitedChassisSpeeds =
             AccelLimiterUtil.accelLimitChassisSpeeds(
                 ChassisSpeeds(driveResult * cos(angle), driveResult * sin(angle), angleResult),
@@ -96,6 +94,7 @@ class DrivetrainVisionAlign(val alignLeft: Boolean) : Command() {
                 Rotation2d()
             )
 
+        Logger.recordOutput("Output Chassis Speeds", accelLimitedChassisSpeeds)
         Drivetrain.driveRobotOriented(accelLimitedChassisSpeeds)
     }
 

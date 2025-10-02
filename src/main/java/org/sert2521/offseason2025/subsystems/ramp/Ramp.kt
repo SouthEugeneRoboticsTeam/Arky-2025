@@ -24,7 +24,8 @@ object Ramp : SubsystemBase() {
     fun idleCommand(): Command {
         return run {
             if (Dispenser.getBlocked()) {
-                io.setSpeed(INTAKE_SPEED)
+//                io.setSpeed(INTAKE_SPEED)
+                io.setSpeed(0.0)
             } else {
                 io.setSpeed(0.0)
             }

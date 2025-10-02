@@ -77,8 +77,10 @@ object Elevator : SubsystemBase() {
         // If it's at stow, then set the voltage to 0
         // Otherwise just run the profile without a new goal until another goal is set
         return run {
-            if (goal.position == ElevatorConstants.stow.elevatorGoalMeters) {
-                io.setVoltage(0.0)
+            if (goal.position == ElevatorConstants.intake.elevatorGoalMeters
+                || goal.position == ElevatorConstants.l1.elevatorGoalMeters) {
+                // io.setVoltage(0.0)
+                io.setReference(currentState.position, currentState.velocity)
             } else {
                 io.setReference(currentState.position, currentState.velocity)
             }

@@ -131,10 +131,8 @@ object AccelLimiterUtil {
         return lastChassisSpeeds
     }
 
-    fun accelLimitChassisSpeeds(
-        fieldChassisSpeeds: ChassisSpeeds,
-        accelLimit: Double, rotOffset: Rotation2d
-    ): ChassisSpeeds {
+    fun accelLimitChassisSpeeds(fieldChassisSpeeds: ChassisSpeeds,
+                                accelLimit: Double, rotOffset:Rotation2d):ChassisSpeeds{
         /**
          * Same as [readJoysticks] but has the speeds passed in through ChassisSpeeds.
          * Outputs calculated ChassisSpeeds once the acceleration limit has been calculated
@@ -147,20 +145,16 @@ object AccelLimiterUtil {
 
         // Total magnitude of change since last cycle
         // NOTE: NOT change of total magnitude: it is magnitude of change in 2D coordinates
-        magChange = sqrt(
-            (lastChassisSpeeds.vxMetersPerSecond - curvedChassisSpeeds.vxMetersPerSecond).pow(2) + (lastChassisSpeeds.vyMetersPerSecond - curvedChassisSpeeds.vyMetersPerSecond).pow(
-                2
-            )
-        )
+        magChange = sqrt((lastChassisSpeeds.vxMetersPerSecond - curvedChassisSpeeds.vxMetersPerSecond).pow(2) + (lastChassisSpeeds.vyMetersPerSecond-curvedChassisSpeeds.vyMetersPerSecond).pow(2))
 
         // The fraction of the change in magnitude that should be applied
         magFraction = 1.0
 
         // Applies maximum magnitude of change of x and y
         // (divide by 50 so that currAccel can be in m/s^2)
-        if (magChange > accelLimit / 50.0) {
+        if (magChange > accelLimit){
             Logger.recordOutput("Accel Limited", true)
-            magFraction = (accelLimit / 50.0) / magChange
+            magFraction = (accelLimit)/magChange
         } else {
             Logger.recordOutput("Accel Limited", false)
         }
@@ -170,7 +164,7 @@ object AccelLimiterUtil {
             curvedChassisSpeeds.vxMetersPerSecond,
             magFraction
         )
-        lastChassisSpeeds.vxMetersPerSecond = MathUtil.interpolate(
+        lastChassisSpeeds.vyMetersPerSecond = MathUtil.interpolate(
             lastChassisSpeeds.vyMetersPerSecond,
             curvedChassisSpeeds.vyMetersPerSecond,
             magFraction

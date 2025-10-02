@@ -7,11 +7,11 @@ import org.sert2521.offseason2025.utils.ManipulatorGoalState
 
 object DispenserConstants {
     const val INTAKE_SPEED_FIRST = 0.2
-    const val INTAKE_SPEED_SECOND = 0.0
-    const val INTAKE_SPEED_THIRD = 0.0
+    const val INTAKE_SPEED_SECOND = -0.1
+    const val INTAKE_SPEED_THIRD = 0.06
 
-    const val OUTTAKE_NORMAL_SPEED = 0.0
-    const val OUTTAKE_L4_SPEED = 0.0
+    const val OUTTAKE_NORMAL_SPEED = 0.3
+    const val OUTTAKE_L4_SPEED = -0.2
     const val OUTTAKE_TIME = 1.0
 
     const val DISPENSER_P = 0.0
@@ -21,11 +21,15 @@ object DispenserConstants {
 }
 
 object ElevatorConstants {
-    val stow = ManipulatorGoalState(0.0, 0.0)
-    val l1 = ManipulatorGoalState(0.0, 0.0)
-    val l2 = ManipulatorGoalState(0.0, 0.0)
-    val l3 = ManipulatorGoalState(0.0, 0.0)
-    val l4 = ManipulatorGoalState(0.0, 0.0)
+    val intake = ManipulatorGoalState(0.015, -0.27)
+    val l1 = ManipulatorGoalState(0.015, -0.182)
+    val l2 = ManipulatorGoalState(0.08, 0.22)
+    val l3 = ManipulatorGoalState(0.28, 0.22)
+    val l4 = ManipulatorGoalState(0.67-0.01, 0.124)
+
+    val l4Out = ManipulatorGoalState(0.015, 0.254)
+    val stow = ManipulatorGoalState(0.015, 0.21)
+
 
     const val ELEVATOR_CURRENT_LIMIT = 40
 
@@ -44,15 +48,15 @@ object ElevatorConstants {
 object WristConstants {
     const val WRIST_CURRENT_LIMIT = 40
 
-    const val WRIST_P = 0.0
-    const val WRIST_D = 0.0
+    const val WRIST_P = 10.0
+    const val WRIST_D = 1.0
 
     const val WRIST_ABS_ENCODER_MULTIPLIER = (15.0 * 24.0) / (36.0 * 16.0)
 }
 
 object RampConstants {
-    const val INTAKE_SPEED = 0.0
-    const val RECENTER_SPEED = 0.0
+    const val INTAKE_SPEED = 0.4
+    const val RECENTER_SPEED = -0.2
 }
 
 object PhysicalConstants {
@@ -88,6 +92,6 @@ object ElectronicIDs {
 
     const val DISPENSER_ID = 17
 
-    const val DISPENSER_BEAMBREAK_ID = 0
-    const val RAMP_BEAMBREAK_ID = 0
+    const val DISPENSER_BEAMBREAK_ID = 8
+    const val RAMP_BEAMBREAK_ID = 9
 }
