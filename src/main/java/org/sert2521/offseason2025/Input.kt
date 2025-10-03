@@ -37,6 +37,8 @@ object Input {
     private val maniL3 = gunnerController.button(6)
     private val maniL4 = gunnerController.button(5)
 
+    private val manualActivateBuffer = gunnerController.button(3)
+
     private val dispenserOuttake = driverController.rightBumper()
     private val dispenserOuttakeNoBack = driverController.leftBumper()
     private val dispenserReset = gunnerController.button(14)
@@ -70,6 +72,8 @@ object Input {
         maniL2.onTrue(ManipulatorRoutines.changeBufferCommand(ManipulatorPositions.L2))
         maniL3.onTrue(ManipulatorRoutines.changeBufferCommand(ManipulatorPositions.L3))
         maniL4.onTrue(ManipulatorRoutines.changeBufferCommand(ManipulatorPositions.L4))
+
+        manualActivateBuffer.onTrue(ManipulatorRoutines.activateBufferCommand())
 
         dispenserOuttake.whileTrue(Dispenser.outtakeCommand())
         dispenserOuttakeNoBack.whileTrue(Dispenser.outtakeCommandNoBack())

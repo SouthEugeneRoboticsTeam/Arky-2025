@@ -29,7 +29,7 @@ object ManipulatorRoutines {
             .alongWith(Commands.runOnce({ Dispenser.reverseOuttake = false }))
             .andThen(Wrist.setWristCommand(ElevatorConstants.l1.wristGoalRotations))    }
 
-    fun l2(): Command {
+    fun l2Safe(): Command {
         return Drivetrain.driveBackCommand().withTimeout(0.2)
             .andThen(Elevator.setElevatorSafeCommand(ElevatorConstants.l2.elevatorGoalMeters)
                 .alongWith(Commands.runOnce({ Dispenser.reverseOuttake = true }))
@@ -37,7 +37,7 @@ object ManipulatorRoutines {
             .andThen(Drivetrain.driveForwardCommand().withTimeout(0.2))
     }
 
-    fun l3(): Command {
+    fun l3Safe(): Command {
         return Drivetrain.driveBackCommand().withTimeout(0.2)
             .andThen(Elevator.setElevatorSafeCommand(ElevatorConstants.l3.elevatorGoalMeters)
                 .alongWith(Commands.runOnce({ Dispenser.reverseOuttake = true }))
@@ -45,7 +45,7 @@ object ManipulatorRoutines {
             .andThen(Drivetrain.driveForwardCommand().withTimeout(0.2))
     }
 
-    fun l4(): Command {
+    fun l4Safe(): Command {
         return Drivetrain.driveBackCommand().withTimeout(0.2)
             .andThen(Elevator.setElevatorSafeCommand(ElevatorConstants.l4.elevatorGoalMeters)
             .alongWith(Commands.runOnce({ Dispenser.reverseOuttake = true }))
@@ -67,19 +67,19 @@ object ManipulatorRoutines {
 
 
     /* Buffered */
-    fun l2Buffered(): Command {
+    fun l2Instant(): Command {
         return Elevator.setElevatorSafeCommand(ElevatorConstants.l2.elevatorGoalMeters)
                 .alongWith(Commands.runOnce({ Dispenser.reverseOuttake = true }))
                 .andThen(Wrist.setWristCommand(ElevatorConstants.l2.wristGoalRotations))
     }
 
-    fun l3Buffered(): Command {
+    fun l3Instant(): Command {
         return Elevator.setElevatorSafeCommand(ElevatorConstants.l3.elevatorGoalMeters)
                 .alongWith(Commands.runOnce({ Dispenser.reverseOuttake = true }))
                 .andThen(Wrist.setWristCommand(ElevatorConstants.l3.wristGoalRotations))
     }
 
-    fun l4Buffered(): Command {
+    fun l4Instant(): Command {
         return Elevator.setElevatorSafeCommand(ElevatorConstants.l4.elevatorGoalMeters)
                 .alongWith(Commands.runOnce({ Dispenser.reverseOuttake = true }))
                 .andThen(Wrist.setWristCommand(ElevatorConstants.l4.wristGoalRotations))
@@ -96,9 +96,9 @@ object ManipulatorRoutines {
             mapOf(
                 ManipulatorPositions.STOW to Commands.none(),
                 ManipulatorPositions.L1 to l1(),
-                ManipulatorPositions.L2 to l2Buffered(),
-                ManipulatorPositions.L3 to l3Buffered(),
-                ManipulatorPositions.L4 to l4Buffered()
+                ManipulatorPositions.L2 to l2Instant(),
+                ManipulatorPositions.L3 to l3Instant(),
+                ManipulatorPositions.L4 to l4Instant()
             )
         ) { bufferedLevel }
     }
