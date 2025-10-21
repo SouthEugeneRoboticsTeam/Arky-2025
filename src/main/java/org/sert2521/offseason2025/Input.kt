@@ -21,7 +21,7 @@ import org.sert2521.offseason2025.subsystems.ramp.Ramp
 
 object Input {
     private val driverController = CommandXboxController(0)
-    private val gunnerController = CommandXboxController(1)
+    val gunnerController = CommandXboxController(1)
 
     private val resetRotOffset = driverController.y()
     private val resetGyroRawYaw = driverController.start()
@@ -31,7 +31,7 @@ object Input {
     private val simpleVisionAlignRight = driverController.b()
     private val stopJoystickFieldOrientation = Trigger { driverController.leftTriggerAxis > 0.3 }
 
-    private val maniStow = gunnerController.button(4)
+    private val maniStow = gunnerController.button(3)
     private val maniL1 = gunnerController.button(8)
     private val maniL2 = gunnerController.button(7)
     private val maniL3 = gunnerController.button(6)
@@ -42,7 +42,8 @@ object Input {
     private val dispenserOuttake = driverController.rightBumper()
     private val dispenserOuttakeNoBack = driverController.leftBumper()
     private val dispenserReset = gunnerController.button(14)
-    private val rampIntake = gunnerController.button(13)
+    private val rampIntake = gunnerController.button(1)
+    private val rampRecenter = gunnerController.button(2)
 
     private val intakeRumble = Trigger { Dispenser.getBlocked() }
 
@@ -78,8 +79,9 @@ object Input {
         dispenserOuttake.whileTrue(Dispenser.outtakeCommand())
         dispenserOuttakeNoBack.whileTrue(Dispenser.outtakeCommandNoBack())
         dispenserReset.onTrue(Dispenser.recenterCommand().alongWith(Ramp.recenterCommand()))
-        rampIntake.onTrue(ManipulatorRoutines.intake()
-            .andThen((Ramp.intakeCommand().alongWith(Dispenser.recenterCommand().asProxy())).until{ !rampIntake.asBoolean }))
+        rampIntake.onTrue(Ramp.recenterCommand().andThen(ManipulatorRoutines.intake())
+            .andThen((Ramp.intakeCommand().alongWith(Dispenser.recenterCommand().asProxy()))).until{ !rampIntake.asBoolean })
+        rampRecenter.whileTrue(Ramp.recenterCommand())
     }
 
     fun getJoystickX(): Double {

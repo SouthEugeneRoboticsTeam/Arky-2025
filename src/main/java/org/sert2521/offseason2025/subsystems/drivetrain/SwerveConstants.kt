@@ -104,7 +104,7 @@ object SwerveConstants {
     const val MAX_SPEED_MPS = 4.571
 
     //As opposed to the max speed, this is the speed you actually want the drivetrain to go at
-    const val DRIVE_SPEED_FAST = 4.0
+    const val DRIVE_SPEED_FAST = 2.0
     const val DRIVE_SPEED_SLOW = 0.5
     const val ROT_SPEED = 5.0
 

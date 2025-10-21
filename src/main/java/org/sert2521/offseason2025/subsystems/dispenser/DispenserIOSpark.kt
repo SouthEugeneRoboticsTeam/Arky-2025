@@ -1,5 +1,6 @@
 package org.sert2521.offseason2025.subsystems.dispenser
 
+import com.revrobotics.spark.ClosedLoopSlot
 import com.revrobotics.spark.SparkBase
 import com.revrobotics.spark.SparkLowLevel
 import com.revrobotics.spark.SparkMax
@@ -42,7 +43,7 @@ class DispenserIOSpark : DispenserIO {
     }
 
     override fun setSpeed(speed: Double) {
-        motor.set(speed)
+        motor.setVoltage(speed*motor.busVoltage)
     }
 
     override fun resetEncoder() {

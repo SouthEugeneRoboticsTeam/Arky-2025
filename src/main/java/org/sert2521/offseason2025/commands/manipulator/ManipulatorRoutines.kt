@@ -55,6 +55,7 @@ object ManipulatorRoutines {
 
     fun stow(): Command {
         return Wrist.setWristCommand(ElevatorConstants.l4Out.wristGoalRotations)
+            .alongWith(Commands.runOnce({ Dispenser.reverseOuttake = true }))
             .andThen(Elevator.setElevatorSafeCommand(ElevatorConstants.stow.elevatorGoalMeters))
             .andThen(Wrist.setWristCommand(ElevatorConstants.stow.wristGoalRotations))
     }

@@ -14,7 +14,7 @@ object DispenserConstants {
     const val OUTTAKE_L4_SPEED = -0.2
     const val OUTTAKE_TIME = 1.0
 
-    const val DISPENSER_P = 0.0
+    const val DISPENSER_P = 1.0
     const val DISPENSER_D = 0.0
 
     const val PID_TO_BACK_DISTANCE = 0.0

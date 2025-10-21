@@ -15,6 +15,7 @@ import org.sert2521.offseason2025.DispenserConstants.OUTTAKE_NORMAL_SPEED
 import org.sert2521.offseason2025.DispenserConstants.OUTTAKE_TIME
 import org.sert2521.offseason2025.commands.manipulator.ManipulatorRoutines
 import org.sert2521.offseason2025.DispenserConstants.PID_TO_BACK_DISTANCE
+import org.sert2521.offseason2025.Input
 
 object Dispenser : SubsystemBase() {
     private val io = DispenserIOSpark()
@@ -54,7 +55,9 @@ object Dispenser : SubsystemBase() {
             run { io.setSpeed(INTAKE_SPEED_THIRD) }.until { !getBlocked() }
         ).finallyDo {
             value -> ManipulatorRoutines.stow().schedule()
-            io.resetEncoder()
+            if (!value){
+                io.resetEncoder()
+            }
         }
     }
 
@@ -68,7 +71,9 @@ object Dispenser : SubsystemBase() {
         }.withTimeout(OUTTAKE_TIME)
             .finallyDo {
                 value -> ManipulatorRoutines.afterOuttake().schedule()
-                io.resetEncoder()
+                if (!value){
+                    io.resetEncoder()
+                }
             }
     }
 

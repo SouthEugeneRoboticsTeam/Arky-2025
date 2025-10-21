@@ -40,9 +40,8 @@ object Ramp : SubsystemBase() {
 
     // TODO: Change
     fun recenterCommand(): Command {
-        return SequentialCommandGroup(
-            run { io.setSpeed(RECENTER_SPEED) }.until { !Dispenser.getBlocked() },
-            intakeCommand().withTimeout(2.0)
-        )
+        return run { io.setSpeed(RECENTER_SPEED) }.until { !Dispenser.getBlocked() }
+
+
     }
 }

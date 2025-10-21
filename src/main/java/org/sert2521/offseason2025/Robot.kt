@@ -73,6 +73,7 @@ object Robot : LoggedRobot() {
         Drivetrain
         Input
         Wrist
+        Autos
     }
 
 
@@ -94,6 +95,7 @@ object Robot : LoggedRobot() {
     }
 
     override fun autonomousInit() {
+        autonomousCommand = Autos.getAutonomousCommand()
         autonomousCommand?.schedule()
     }
 
