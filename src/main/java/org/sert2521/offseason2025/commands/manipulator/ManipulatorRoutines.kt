@@ -7,8 +7,6 @@ import org.sert2521.offseason2025.subsystems.drivetrain.Drivetrain
 import org.sert2521.offseason2025.subsystems.elevator.Elevator
 import org.sert2521.offseason2025.subsystems.wrist.Wrist
 
-enum class Manipulator
-
 object ManipulatorRoutines {
     enum class ManipulatorPositions {
         STOW,

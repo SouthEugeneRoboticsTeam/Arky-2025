@@ -54,10 +54,8 @@ object Dispenser : SubsystemBase() {
             run { io.setSpeed(INTAKE_SPEED_SECOND) }.until { getBlocked() },
             run { io.setSpeed(INTAKE_SPEED_THIRD) }.until { !getBlocked() }
         ).finallyDo {
-            value -> ManipulatorRoutines.stow().schedule()
-            if (!value){
-                io.resetEncoder()
-            }
+            _ -> ManipulatorRoutines.stow().schedule()
+            io.resetEncoder()
         }
     }
 
