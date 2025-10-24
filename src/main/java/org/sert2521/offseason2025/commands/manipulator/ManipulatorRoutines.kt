@@ -61,7 +61,7 @@ object ManipulatorRoutines {
     }
 
     fun afterOuttake(): Command {
-        return Drivetrain.driveBackCommand().withTimeout(0.4)
+        return Drivetrain.driveBackCommand().withTimeout(0.4).asProxy()
             .andThen(this.stow())
 
     }
