@@ -11,11 +11,6 @@ class VisionIOLimelight(private val name: String) : VisionIO {
         val useMegaTag2 = (DriverStation.isAutonomous() && DriverStation.isEnabled())
         var doRejectUpdate = false
 
-        /*
-        Note: this code will almost NEVER use MegaTag1
-        Especially given that I have NEVER seen the gyro be disconnected
-         */
-
         if (!useMegaTag2) {
             val mt1 = LimelightHelpers.getBotPoseEstimate_wpiBlue(name)
 
