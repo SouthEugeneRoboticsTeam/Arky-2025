@@ -129,7 +129,7 @@ object SwerveConstants {
 
     const val FF_RAMP_RATE = 1.0
 
-    val LIMELIGHT_STDV = VecBuilder.fill(1.0, 1.0, 1.0E99)
+    val LIMELIGHT_STDV = VecBuilder.fill(0.7, 0.7, 1.0E99)
     val LIMELIGHT_STDV_YAW_RESET = VecBuilder.fill(0.7, 0.7, 1.0)
 
     val mapleSimConfig = DriveTrainSimulationConfig.Default()

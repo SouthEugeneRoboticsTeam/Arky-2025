@@ -40,7 +40,7 @@ object Autos {
 //            .raceWith(Commands.waitUntil{Dispenser.getBlocked()}
 //                .andThen(Commands.waitUntil{!Dispenser.getBlocked()}))
 //            .withTimeout(3.0).asProxy(),
-        "Dispenser Outtake" to Dispenser.outtakeCommandNoBack().asProxy(),
+        "Dispenser Outtake" to Dispenser.outtakeCommandNoBack().asProxy().withTimeout(0.1),
         "Dispenser Outtake With Back" to Dispenser.outtakeCommand().asProxy(),
 
         "Wait L1 Post-Outtake" to Commands.none(),

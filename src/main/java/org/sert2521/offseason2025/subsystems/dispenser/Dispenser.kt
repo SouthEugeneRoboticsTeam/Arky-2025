@@ -106,4 +106,8 @@ object Dispenser : SubsystemBase() {
             io.setPIDReference(PID_TO_BACK_DISTANCE)
         }.andThen(WaitUntilCommand{ MathUtil.isNear(ioInputs.positionEncoder, PID_TO_BACK_DISTANCE, 0.1)})
     }
+
+    fun resetEncoder(){
+        io.resetEncoder()
+    }
 }

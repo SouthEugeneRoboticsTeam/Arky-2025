@@ -16,6 +16,7 @@ import org.littletonrobotics.junction.networktables.NT4Publisher
 import org.littletonrobotics.junction.wpilog.WPILOGReader
 import org.littletonrobotics.junction.wpilog.WPILOGWriter
 import org.sert2521.offseason2025.MetaConstants.currentRealityMode
+import org.sert2521.offseason2025.subsystems.dispenser.Dispenser
 import org.sert2521.offseason2025.subsystems.drivetrain.Drivetrain
 import org.sert2521.offseason2025.subsystems.wrist.Wrist
 
@@ -105,6 +106,7 @@ object Robot : LoggedRobot() {
 
     override fun teleopInit() {
         autonomousCommand?.cancel()
+        Dispenser.resetEncoder()
     }
 
     /** This method is called periodically during operator control.  */

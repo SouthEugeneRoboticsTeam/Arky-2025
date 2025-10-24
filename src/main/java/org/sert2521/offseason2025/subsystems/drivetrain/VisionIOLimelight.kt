@@ -1,12 +1,15 @@
 package org.sert2521.offseason2025.subsystems.drivetrain
 
 import edu.wpi.first.math.geometry.Pose2d
+import edu.wpi.first.wpilibj.DriverStation
+import edu.wpi.first.wpilibj.RobotBase
 import org.sert2521.offseason2025.utils.LimelightHelpers
 
 class VisionIOLimelight(private val name: String) : VisionIO {
 
     override fun updateInputs(inputs: VisionIO.VisionIOInputs) {
-        val useMegaTag2 = false//set to false to use MegaTag1
+        val useMegaTag2 = DriverStation.isDisabled() ||
+                (DriverStation.isAutonomous() && DriverStation.isEnabled())
         var doRejectUpdate = false
 
         /*

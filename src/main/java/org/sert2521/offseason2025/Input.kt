@@ -37,7 +37,7 @@ object Input {
     private val maniL3 = gunnerController.button(6)
     private val maniL4 = gunnerController.button(5)
 
-    private val manualActivateBuffer = gunnerController.button(3)
+    private val manualActivateBuffer = gunnerController.button(4)
 
     private val dispenserOuttake = driverController.rightBumper()
     private val dispenserOuttakeNoBack = driverController.leftBumper()

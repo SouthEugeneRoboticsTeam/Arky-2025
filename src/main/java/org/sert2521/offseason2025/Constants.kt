@@ -12,7 +12,7 @@ object DispenserConstants {
 
     const val OUTTAKE_NORMAL_SPEED = 0.3
     const val OUTTAKE_L4_SPEED = -0.2
-    const val OUTTAKE_TIME = 1.0
+    const val OUTTAKE_TIME = 0.2 // Used to be 1.0
 
     const val DISPENSER_P = 1.0
     const val DISPENSER_D = 0.0
